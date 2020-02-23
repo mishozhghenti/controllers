@@ -102,7 +102,7 @@ public class DeviceDAO extends Repository {
         return result;
     }
 
-    public boolean addDeviceToGateway(long deviceId, long gatewayId) { // TODO more than 10 devices revert insertion
+    public boolean addDeviceToGateway(long deviceId, long gatewayId) {
         Connection connection = null;
         Statement statement = null;
         PreparedStatement preparedStatement = null;
