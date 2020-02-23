@@ -36,3 +36,24 @@ CREATE TABLE `gateways`.`associated_devices` (
     REFERENCES `gateways`.`peripheral_devices` (`device_id`)
     ON DELETE CASCADE
     ON UPDATE CASCADE );
+
+
+
+
+    DELIMITER $$
+
+CREATE TRIGGER gateway_connected_device_limit
+  AFTER INSERT
+  ON associated_devices
+  FOR EACH ROW
+BEGIN
+
+  if (select count(*) as devices_counter from associated_devices
+where gateway_id=NEW.gateway_id)> 10
+  THEN
+    SIGNAL SQLSTATE '45000'
+      SET MESSAGE_TEXT = 'No More Then 10 Devices Can Connected To A Single Gateway';
+  END IF;
+END;
+$$
+
