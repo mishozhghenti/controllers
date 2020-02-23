@@ -4,7 +4,6 @@ import com.example.demo.model.Gateway;
 import com.example.demo.model.Repository;
 import com.example.demo.util.Utils;
 import org.apache.tomcat.jdbc.pool.DataSource;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
@@ -28,10 +27,13 @@ public class GatewayDAO extends Repository {
             "from master_devices\n" +
             "         left join associated_devices ad on master_devices.master_id = ad.gateway_id\n" +
             "         left join peripheral_devices pd on ad.device_id = pd.device_id\n";
-    @Autowired
-    DataSource pool;
+    final DataSource pool;
     @Value("${db.mysql-database-name}")
     String dbName;
+
+    public GatewayDAO(DataSource pool) {
+        this.pool = pool;
+    }
 
     public boolean addNewGateway(String serialNumber, String name, String ip) {
         Connection connection = null;
@@ -78,7 +80,6 @@ public class GatewayDAO extends Repository {
             preparedStatement = connection.prepareStatement(ASSOCIATE_DEVICES_QUERY);
 
             resultSet = preparedStatement.executeQuery();
-
 
             while (resultSet.next()) {
                 Gateway currentGateway = Utils.fetchGateway(resultSet);

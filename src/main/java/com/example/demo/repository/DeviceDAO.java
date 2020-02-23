@@ -2,7 +2,6 @@ package com.example.demo.repository;
 
 import com.example.demo.model.Repository;
 import org.apache.tomcat.jdbc.pool.DataSource;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
@@ -10,10 +9,13 @@ import java.sql.*;
 
 @Service
 public class DeviceDAO extends Repository {
-    @Autowired
-    DataSource pool;
+    final DataSource pool;
     @Value("${db.mysql-database-name}")
     String dbName;
+
+    public DeviceDAO(DataSource pool) {
+        this.pool = pool;
+    }
 
     public boolean createDevice(long uid, String vendor) {
         Connection connection = null;
