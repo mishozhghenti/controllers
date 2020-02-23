@@ -9,11 +9,25 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.sql.*;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 @Service
 public class GatewayDAO extends Repository {
-
+    private static final String ASSOCIATE_DEVICES_QUERY = "select master_devices.master_id,\n" +
+            "       master_devices.serial_number,\n" +
+            "       master_devices.name,\n" +
+            "       master_devices.ip_v4,\n" +
+            "       pd.device_id,\n" +
+            "       pd.uid,\n" +
+            "       pd.vendor,\n" +
+            "       pd.date_created,\n" +
+            "       pd.status\n" +
+            "from master_devices\n" +
+            "         left join associated_devices ad on master_devices.master_id = ad.gateway_id\n" +
+            "         left join peripheral_devices pd on ad.device_id = pd.device_id\n";
     @Autowired
     DataSource pool;
     @Value("${db.mysql-database-name}")
@@ -25,7 +39,6 @@ public class GatewayDAO extends Repository {
         Statement statement = null;
         boolean committed = false;
         try {
-            // Get the connection from the pool.
             connection = pool.getConnection();
 
             statement = connection.createStatement();
@@ -42,7 +55,7 @@ public class GatewayDAO extends Repository {
             preparedStatement.executeUpdate();
             committed = true;
         } catch (SQLException e) {
-            e.getStackTrace();
+            e.printStackTrace();
         } finally {
             closeDAO(connection, preparedStatement, statement);
         }
@@ -61,20 +74,8 @@ public class GatewayDAO extends Repository {
 
             statement = connection.createStatement();
             statement.executeQuery("USE " + dbName);
-            String query = "select master_devices.master_id,\n" +
-                    "       master_devices.serial_number,\n" +
-                    "       master_devices.name,\n" +
-                    "       master_devices.ip_v4,\n" +
-                    "       pd.device_id,\n" +
-                    "       pd.uid,\n" +
-                    "       pd.vendor,\n" +
-                    "       pd.date_created,\n" +
-                    "       pd.status\n" +
-                    "from master_devices\n" +
-                    "         left join associated_devices ad on master_devices.master_id = ad.gateway_id\n" +
-                    "         left join peripheral_devices pd on ad.device_id = pd.device_id";
 
-            preparedStatement = connection.prepareStatement(query);
+            preparedStatement = connection.prepareStatement(ASSOCIATE_DEVICES_QUERY);
 
             resultSet = preparedStatement.executeQuery();
 
@@ -91,7 +92,8 @@ public class GatewayDAO extends Repository {
                 }
             }
             gateways.addAll(gatewayMap.values());
-        } catch (SQLException ignored) {
+        } catch (SQLException e) {
+            e.printStackTrace();
         } finally {
             closeDAO(connection, preparedStatement, statement, resultSet);
         }
@@ -109,19 +111,8 @@ public class GatewayDAO extends Repository {
 
             statement = connection.createStatement();
             statement.executeQuery("USE " + dbName);
-            String query = "select master_devices.master_id,\n" +
-                    "       master_devices.serial_number,\n" +
-                    "       master_devices.name,\n" +
-                    "       master_devices.ip_v4,\n" +
-                    "       pd.device_id,\n" +
-                    "       pd.uid,\n" +
-                    "       pd.vendor,\n" +
-                    "       pd.date_created,\n" +
-                    "       pd.status\n" +
-                    "from master_devices\n" +
-                    "         left join associated_devices ad on master_devices.master_id = ad.gateway_id\n" +
-                    "         left join peripheral_devices pd on ad.device_id = pd.device_id\n" +
-                    "where master_devices.master_id = ?";
+            String query = ASSOCIATE_DEVICES_QUERY +
+                    "where master_devices.master_id = ?;";
 
 
             preparedStatement = connection.prepareStatement(query);
@@ -132,8 +123,8 @@ public class GatewayDAO extends Repository {
             if (resultSet.next()) {
                 gateway = Utils.fetchGateway(resultSet);
             }
-        } catch (SQLException ignored) {
-            System.out.println(Arrays.toString(ignored.getStackTrace()));
+        } catch (SQLException e) {
+            e.printStackTrace();
         } finally {
             closeDAO(connection, preparedStatement, statement, resultSet);
         }

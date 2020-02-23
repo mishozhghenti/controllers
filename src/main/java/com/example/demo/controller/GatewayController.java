@@ -39,6 +39,4 @@ public class GatewayController {
     public List<Gateway> getAllGatewaysInfo() {
         return gatewayDAO.getAllGatewaysDetails();
     }
-
-
 }
