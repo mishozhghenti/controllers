@@ -29,10 +29,10 @@ CREATE TABLE `gateways`.`associated_devices` (
   CONSTRAINT `gateway_fk`
     FOREIGN KEY (`gateway_id`)
     REFERENCES `gateways`.`master_devices` (`master_id`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION,
+    ON DELETE CASCADE
+    ON UPDATE CASCADE ,
   CONSTRAINT `periph_fk`
     FOREIGN KEY (`device_id`)
     REFERENCES `gateways`.`peripheral_devices` (`device_id`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION);
+    ON DELETE CASCADE
+    ON UPDATE CASCADE );

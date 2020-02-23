@@ -114,7 +114,6 @@ public class GatewayDAO extends Repository {
             String query = ASSOCIATE_DEVICES_QUERY +
                     "where master_devices.master_id = ?;";
 
-
             preparedStatement = connection.prepareStatement(query);
             preparedStatement.setLong(1, gatewayId);
 

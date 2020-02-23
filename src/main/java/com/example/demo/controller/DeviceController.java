@@ -23,26 +23,26 @@ public class DeviceController {
 
     @GetMapping("/changeStatus")
     public Object changeDeviceStatus(@RequestParam(name = "deviceId") long deviceId, @RequestParam(name = "status") boolean status) {
-        deviceDAO.changeDeviceStatus(deviceId, status);
-        return "OK";
+        boolean changed = deviceDAO.changeDeviceStatus(deviceId, status);
+        return (changed) ? "Device Status Changed Successfully " : "Failed Changing Device Status";
     }
 
     @GetMapping("/delete")
     public Object deleteDevice(@RequestParam(name = "deviceId") long deviceId) {
-        deviceDAO.deleteDevice(deviceId);
-        return "OK";
+        boolean deleted = deviceDAO.deleteDevice(deviceId);
+        return (deleted) ? "Device Deleted  Successfully " : "Failed Deleting Device";
     }
 
     @GetMapping("/addToGateway")
     public Object addToGateway(@RequestParam(name = "deviceId") long deviceId, @RequestParam(name = "gatewayId") long gatewayId) {
-        deviceDAO.addDeviceToGateway(deviceId, gatewayId);
-        return "OK";
+        boolean added = deviceDAO.addDeviceToGateway(deviceId, gatewayId);
+        return (added) ? "Device Added To Gateway Successfully " : "Failed Adding Device To Gateway";
     }
 
     @GetMapping("/removeDeviceFromGateway")
     public Object removeDeviceFromGateway(@RequestParam(name = "deviceId") long deviceId, @RequestParam(name = "gatewayId") long gatewayId) {
-        deviceDAO.removeDeviceFromGateway(deviceId, gatewayId);
-        return "OK";
+        boolean removed = deviceDAO.removeDeviceFromGateway(deviceId, gatewayId);
+        return (removed) ? "Device Removed Successfully From Gateway" : "Failed Removing Device From Gateway";
     }
 
 }

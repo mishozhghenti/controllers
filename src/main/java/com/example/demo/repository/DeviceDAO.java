@@ -15,7 +15,6 @@ public class DeviceDAO extends Repository {
     @Value("${db.mysql-database-name}")
     String dbName;
 
-
     public boolean createDevice(long uid, String vendor) {
         Connection connection = null;
         PreparedStatement preparedStatement = null;
@@ -39,26 +38,125 @@ public class DeviceDAO extends Repository {
             preparedStatement.executeUpdate();
             committed = true;
         } catch (SQLException e) {
-            e.getStackTrace();
+            e.printStackTrace();
         } finally {
             closeDAO(connection, preparedStatement, statement);
         }
         return committed;
     }
 
-    public boolean changeDeviceStatus(long deviceId, boolean status){
-        return false;
+    public boolean changeDeviceStatus(long deviceId, boolean status) {
+        Connection connection = null;
+        Statement statement = null;
+        PreparedStatement preparedStatement = null;
+        boolean result = false;
+        try {
+            connection = pool.getConnection();
+
+            statement = connection.createStatement();
+            statement.executeQuery("USE " + dbName);
+
+            String query = "update peripheral_devices set status=? where device_id=?;";
+
+            preparedStatement = connection.prepareStatement(query);
+            preparedStatement.setBoolean(1, status);
+            preparedStatement.setLong(2, deviceId);
+
+            int resultCode = preparedStatement.executeUpdate();
+            if (resultCode == 1) {
+                result = true;
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            closeDAO(connection, preparedStatement, statement);
+        }
+        return result;
     }
 
     public boolean deleteDevice(long deviceId) {
-        return false;
+        Connection connection = null;
+        Statement statement = null;
+        PreparedStatement preparedStatement = null;
+        boolean result = false;
+        try {
+            connection = pool.getConnection();
+
+            statement = connection.createStatement();
+            statement.executeQuery("USE " + dbName);
+
+            String query = "delete from peripheral_devices where device_id=?;";
+
+            preparedStatement = connection.prepareStatement(query);
+            preparedStatement.setLong(1, deviceId);
+
+            int resultCode = preparedStatement.executeUpdate();
+            if (resultCode == 1) {
+                result = true;
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            closeDAO(connection, preparedStatement, statement);
+        }
+        return result;
     }
 
-    public boolean addDeviceToGateway(long deviceId, long gatewayId) {
-        return false;
+    public boolean addDeviceToGateway(long deviceId, long gatewayId) { // TODO more than 10 devices revert insertion
+        Connection connection = null;
+        Statement statement = null;
+        PreparedStatement preparedStatement = null;
+        boolean result = false;
+        try {
+            connection = pool.getConnection();
+
+            statement = connection.createStatement();
+            statement.executeQuery("USE " + dbName);
+
+            String query = "insert into associated_devices (gateway_id, device_id) values (?,?);";
+
+            preparedStatement = connection.prepareStatement(query);
+            preparedStatement.setLong(1, gatewayId);
+            preparedStatement.setLong(2, deviceId);
+
+            int resultCode = preparedStatement.executeUpdate();
+            if (resultCode == 1) {
+                result = true;
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            closeDAO(connection, preparedStatement, statement);
+        }
+        return result;
     }
 
     public boolean removeDeviceFromGateway(long deviceId, long gatewayId) {
-        return false;
+        Connection connection = null;
+        Statement statement = null;
+        PreparedStatement preparedStatement = null;
+        boolean result = false;
+        try {
+            connection = pool.getConnection();
+
+            statement = connection.createStatement();
+            statement.executeQuery("USE " + dbName);
+
+            String query = "delete from associated_devices where gateway_id=? and device_id=?;";
+
+            preparedStatement = connection.prepareStatement(query);
+            preparedStatement.setLong(1, gatewayId);
+            preparedStatement.setLong(2, deviceId);
+
+            int resultCode = preparedStatement.executeUpdate();
+            if (resultCode == 1) {
+                result = true;
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            closeDAO(connection, preparedStatement, statement);
+        }
+        return result;
     }
 }
