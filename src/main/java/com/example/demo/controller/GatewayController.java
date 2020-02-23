@@ -1,5 +1,6 @@
 package com.example.demo.controller;
 
+import com.example.demo.model.Gateway;
 import com.example.demo.repository.GatewayDAO;
 import com.example.demo.util.Utils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -7,6 +8,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("api/gateway")
@@ -28,13 +31,13 @@ public class GatewayController {
     }
 
     @GetMapping("/getGatewayInfo")
-    public Object getGatewayInfo(@RequestParam(name = "gatewayId") long gatewayId) {
-        return null;
+    public Gateway getGatewayInfo(@RequestParam(name = "gatewayId") long gatewayId) {
+        return gatewayDAO.getSingleGatewayDetails(gatewayId);
     }
 
     @GetMapping("/getAllGatewaysInfo")
-    public Object getAllGatewaysInfo() {
-        return null;
+    public List<Gateway> getAllGatewaysInfo() {
+        return gatewayDAO.getAllGatewaysDetails();
     }
 
 

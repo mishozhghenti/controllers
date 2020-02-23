@@ -4,37 +4,38 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Gateway {
-    private Integer id;
+    private Integer gatewayId;
     private String serialName;
     private String name;
     private String ipV4;
     private List<Device> devices;
 
-    public Gateway(Integer id, String serialName, String name, String ipV4) {
-        init(id, serialName, name, ipV4, new ArrayList<>());
+    public Gateway(Integer gatewayId, String serialName, String name, String ipV4) {
+        init(gatewayId, serialName, name, ipV4, new ArrayList<>());
     }
 
-    public Gateway(Integer id, String serialName, String name, String ipV4, List<Device> devices) {
-        init(id, serialName, name, ipV4, devices);
+    public Gateway(Integer gatewayId, String serialName, String name, String ipV4, List<Device> devices) {
+        init(gatewayId, serialName, name, ipV4, devices);
     }
 
     public Gateway() {
+        devices = new ArrayList<>();
     }
 
     private void init(Integer id, String serialName, String name, String ipV4, List<Device> devices) {
-        this.id = id;
+        this.gatewayId = id;
         this.serialName = serialName;
         this.name = name;
         this.ipV4 = ipV4;
         this.devices = devices;
     }
 
-    public Integer getId() {
-        return id;
+    public Integer getGatewayId() {
+        return gatewayId;
     }
 
-    public void setId(Integer id) {
-        this.id = id;
+    public void setGatewayId(Integer gatewayId) {
+        this.gatewayId = gatewayId;
     }
 
     public String getSerialName() {
@@ -61,10 +62,18 @@ public class Gateway {
         this.ipV4 = ipV4;
     }
 
+    public List<Device> getDevices() {
+        return devices;
+    }
+
+    public void setDevices(List<Device> devices) {
+        this.devices = devices;
+    }
+
     @Override
     public String toString() {
         return "Gateway{" +
-                "id=" + id +
+                "id=" + gatewayId +
                 ", serialName='" + serialName + '\'' +
                 ", name='" + name + '\'' +
                 ", ipV4='" + ipV4 + '\'' +

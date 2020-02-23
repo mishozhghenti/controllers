@@ -21,7 +21,7 @@ public class DeviceController {
         return (res) ? "Device Added Successfully " : "Failed Adding New Device";
     }
 
-    @GetMapping("/delete")
+    @GetMapping("/changeStatus")
     public Object changeDeviceStatus(@RequestParam(name = "deviceId") long deviceId, @RequestParam(name = "status") boolean status) {
         deviceDAO.changeDeviceStatus(deviceId, status);
         return "OK";
