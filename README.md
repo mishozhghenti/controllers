@@ -16,3 +16,14 @@
 ### Project Details:
 
 * Runs on http://localhost:8080/
+
+### Gateways - http://localhost:8080/api/gateway
+Add New Gateway: 				`/add`<br/>
+Get Single Gateway Info:		`/getGatewayInfo`<br/>
+Get All Gateways Info:		    `/getAllGatewaysInfo`<br/>
+### Devices - http://localhost:8080/api/device
+Add New Device:					`/add`<br/>
+Delete Device:					`/delete`<br/>
+Change Device Status:			`/changeStatus`<br/>
+Add Device To Gateway:			`/addToGateway`<br/>
+Remove Device From Gateway:		`/removeDeviceFromGateway`<br/>
