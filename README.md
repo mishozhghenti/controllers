@@ -21,9 +21,12 @@
 Add New Gateway: 				`/add`<br/>
 Get Single Gateway Info:		`/getGatewayInfo`<br/>
 Get All Gateways Info:		    `/getAllGatewaysInfo`<br/>
+eg: http://localhost:8080/api/gateway/add
 ### Devices - http://localhost:8080/api/device
 Add New Device:					`/add`<br/>
 Delete Device:					`/delete`<br/>
 Change Device Status:			`/changeStatus`<br/>
 Add Device To Gateway:			`/addToGateway`<br/>
 Remove Device From Gateway:		`/removeDeviceFromGateway`<br/>
+eg: http://localhost:8080/api/device/add
+
