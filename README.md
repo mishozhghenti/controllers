@@ -30,3 +30,10 @@ Add Device To Gateway:			`/addToGateway`<br/>
 Remove Device From Gateway:		`/removeDeviceFromGateway`<br/>
 eg: http://localhost:8080/api/device/add
 
+### Business Logic Restriction
+Each gateways could have no more than 10 devices connected<br/>
+(After insertion trigger added)
+
+### DataBase (MySQL):
+Schema Structure: `src/main/java/com/example/demo/sql/architecture.sql`<br/>
+Test Data: `src/main/java/com/example/demo/sql/content.sql`<br/>
